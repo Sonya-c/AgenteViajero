@@ -41,6 +41,10 @@ class City:
     self.x = x
     self.y = y
     self.name = name
+
+    # Es un diccionario de vecinos 
+    # Las claves de diccionario son el id de los vecinos 
+    # y el valor la distancia desde esta ciudad hacia el vecino 
     self.neighbors = dict()
 
   def distance(self, city) -> float: 
@@ -67,6 +71,8 @@ class City:
       city.neighbors[self.id] = distance 
       
     return distance 
+
+  
     
   def __repr__(self):
     """

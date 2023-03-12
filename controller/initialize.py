@@ -17,13 +17,19 @@ def initialize(world_data, num_routes=4):
   routes = []
   P = []
 
+  # Generar num_routes rutas
   while len(P) < num_routes:
+    # Crear una copia del mundo (para no editar la orginal)
     route = world_data.cities.copy()
+
+    # Crear una ruta aleatoria
     random.shuffle(route)
 
+    # Si la ruta no esta repetida, añadirna 
     if route not in routes:
-      solution = Solution(route)
-      solution.evaluate()
+      # se tiene que crear un objeto solución 
+      # al pasarle la ruta la evalua
+      solution = Solution(route) 
       P.append(solution)
 
   return P

@@ -1,49 +1,82 @@
-# Modelos
-# from models import City, WorldData, Solution
-
 # Controladores
-from controller import get_data, initialize, select_parents, reproduction
+from controller import get_data, initialize, select_parents, reproduction, survivals
+from view import show
 
-MAX_INTERATIONS: int = 1
+MAX_GENERATIONS: int = 100
+MIN_GENERATIONS: int = 2
 
-def accept(p) -> bool: 
-  # TODO
-  return False 
-  
+def accept(P):
+  """
+  Aceptar una generación. Si la genración actual es muy similar a la antieior, detenerse 
+  """
+  if len(P) < MIN_GENERATIONS: # se debe cumplir con un minimo de iteraciones 
+    return False 
+  else: 
+    present_generation = P[len(P) - 1]
+    past_generation = P[len(P) - 2]
+
+    # contar el número de soluciones repetidas 
+    repeated = 0
+    for solution in present_generation:
+      if solution.route in [route.route for route in past_generation]:
+        repeated += 1
+
+    return repeated == len(past_generation)
+    #  Increible
+    # wait, esta mal 
+    # no, mentira, la generación 13 es igual a la anterior 
+    #la generación 13 si, empiza en la 0
+    # deberiamos aumentar el minimo? 
+    # y si pongo (n - 1)! :D okay, no
+    #maybe
+    #No suena loco sabiendo que n varia
+    #Ponle 150 solo para ver si se activa la condicion
+    
 def main():
   t: int = 0  # Generación
-  P = [0*MAX_INTERATIONS]  # Arreglo de poblaciones
 
   # Obtener datos desde el .csv
-  print("### Todas las ciudades ###")
-  world_data = get_data()
+  world_data = get_data("data/complex_test_data.csv")
+  print("TODAS LAS CIUDADES")
   print(world_data)
 
+  P = [0*MAX_GENERATIONS]  # Arreglo de poblaciones
+
   # Crear (de forma aleatoria) la primera población
-  print("### Ciudades iniciales ###")
   P[t] = initialize(world_data)
+  print("\nGENERACIÓN 0")
   for solution in P[t]:
     print(solution)
 
   # Mientras que el número de interaciones no rebace el limite y no se haya aceptado la solución, seguir buscando
-  while t < MAX_INTERATIONS and not accept(P[t]):
+  while t < MAX_GENERATIONS and not accept(P):
     # Seleccionar los padres (los mejores, con el fitness mas pequeño)
-    print("### Padres seleccionados ###")
     parents = select_parents(P[t], 4)
-    for parent in parents:
-      print(parent)
 
     # Reproducir los padres para crear la siguiente generación
-    print("### Hijos (sin mutar) ###")
     children = reproduction(parents)
+
+    # Mutar a los hijos
     for child in children:
-      print(child)
+      child.mutate()
 
-    # children.mutate()
-    # children.evaluate()
-
-    # select_survivors()
+    # Construir la siguiente generación 
+    next_generation = survivals(parents + children, min_size = 4)
+    P.append(next_generation)
     t = t + 1
+
+    print(f"\nGENRACIÓN {t}")
+    for solution in P[t]:
+      print(solution)
+
+  # Seleccionar la mejor solución 
+  print("\nNúmero total de generaciones =", t + 1)
+  best_solution = min(P[t], key=lambda solution: solution.fitness)
+  print("\nMEJOR SOLUCIÓN")
+  print(best_solution)
+  
+  print("Mostrando representación grafica, si no aparece abrir una pestaña de Output...")
+  show(best_solution.route)
 
 if __name__ == '__main__':
   main()

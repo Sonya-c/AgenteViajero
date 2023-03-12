@@ -1,3 +1,4 @@
+import random 
 
 class Solution:
   """
@@ -20,7 +21,9 @@ class Solution:
   """
   def __init__(self, route = []):
     self.route = route
+    self.route_len = len(route)
     self.fitness = 0
+    self.evaluate()
 
   def evaluate(self):
     """
@@ -42,8 +45,32 @@ class Solution:
     self.fitness += c1.distance(c2)
     
   def mutate(self):
-    pass
+    # Se mutara bajo una probabilidad muy pequela
+    if random.randint(0, 100) == 1:
+      print("Mutación!")
 
+      # se toman dos ciudades de forma al azar y se intercambian
+      city1, city2 = random.sample(set(range(0, self.route_len)), 2)
+      self.route[city1], self.route[city2] = self.route[city2], self.route[city1]
+
+  def get_neighbors(self, pos):
+    """
+    Dada una posición, te halla los vecinos de dicha posición
+    """
+    neighbors = []
+    
+    if pos == 0: 
+      neighbors.append(self.route[self.route_len - 1])
+    else: 
+      neighbors.append(self.route[pos - 1])
+
+    if pos == self.route_len - 1:
+      neighbors.append(self.route[0])
+    else: 
+      neighbors.append(self.route[pos + 1])
+      
+    return neighbors
+    
   def __repr__(self):
     """
     Representación impresa de la clase
