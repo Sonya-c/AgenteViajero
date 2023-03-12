@@ -1,4 +1,4 @@
-def select_parents(population, num_parents = 2):
+def select_parents(population, num_parents = 4):
   """
   Seleccionar los mejores padres
 

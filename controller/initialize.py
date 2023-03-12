@@ -2,7 +2,7 @@ import random
 from models import Solution
 
 
-def initialize(world_data, num_routes=4):
+def initialize(world_data, num_routes=8):
   """
   Crea rutas iniciales aleatorias 
 

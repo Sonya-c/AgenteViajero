@@ -36,7 +36,7 @@ def main():
   t: int = 0  # Generación
 
   # Obtener datos desde el .csv
-  world_data = get_data("data/complex_test_data.csv")
+  world_data = get_data("data/simple_test_data.csv")
   print("TODAS LAS CIUDADES")
   print(world_data)
 
@@ -51,7 +51,7 @@ def main():
   # Mientras que el número de interaciones no rebace el limite y no se haya aceptado la solución, seguir buscando
   while t < MAX_GENERATIONS and not accept(P):
     # Seleccionar los padres (los mejores, con el fitness mas pequeño)
-    parents = select_parents(P[t], 4)
+    parents = select_parents(P[t], 6)
 
     # Reproducir los padres para crear la siguiente generación
     children = reproduction(parents)

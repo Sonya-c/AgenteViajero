@@ -75,4 +75,4 @@ class Solution:
     """
     Representación impresa de la clase
     """
-    return f"ruta = {self.route} fitness = {self.fitness}"
+    return f"ruta = {self.route}\nfitness = {self.fitness}"
